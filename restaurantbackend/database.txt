@@ -1,0 +1,57 @@
+States
+------
+stateid pk
+statename
+
+City
+----
+stateid fk
+cityid pk
+cityname
+
+Restaurant
+----------
+restaurantid pk
+restaurantname
+ownername
+mobileno
+emailid
+phonenumber
+address
+stateid
+cityid
+url
+fassai_no
+shopregistration
+gst
+logo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
