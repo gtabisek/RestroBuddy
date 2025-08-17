@@ -1,31 +1,34 @@
-import { Button, Divider, Grid, Paper, TextField, dividerClasses } from "@mui/material";
-import { useEffect,useState } from "react";
-import { useNavigate } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line eqeqeq
+// eslint-disable-next-line react-hooks/exhaustive-deps
+// eslint-disable-next-line jsx-a11y/alt-text
+// eslint-disable-next-line no-unreachable
+// eslint-disable-next-line no-useless-escape
+import { Button, Divider, Grid, TextField } from "@mui/material";
+import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { postData, serverURL } from "../../services/FetchNodeServices";
 import {useSelector,useDispatch} from "react-redux";
-import { Calculate } from "@mui/icons-material";
 import Plusminus from "../plusminus/Plusminus";
 import Swal from "sweetalert2";
 import { useCallback } from "react";
-import useRazorpay from "react-razorpay";
+// import Razorpay JS SDK dynamically
 
 export default function TableCart(props){
-  const navigate=useNavigate();
   const admin=JSON.parse(localStorage.getItem('ADMIN'));
   const [customername,setCustomername]=useState('');
   const [mobileNo,setMobileNo]=useState('')
   const gst=(admin.gsttype)/2;
-  const [Razorpay] = useRazorpay();
   
 
   const foodOrder=useSelector((state)=>state.orderData);
   const dispatch=useDispatch();
 
-  let foodList=[];  
-  if(props.floortableno.length!=1){
-      const cart=foodOrder[props.floortableno];
-      if(cart!=undefined)
-      foodList=Object.values(cart);
+  let foodList=[];
+  if(props.floortableno.length !== 1){
+    const cart = foodOrder[props.floortableno];
+    if(cart !== undefined)
+      foodList = Object.values(cart);
   }
 
   const handleQtyChange=(v,item)=>{
@@ -33,13 +36,13 @@ export default function TableCart(props){
 
     console.log("foodorder",foodOrder);
     console.log("foodlist",foodList);
-    if(v==0){
+    if(v === 0){
       delete foodList[item.fooditemid];
-      foodOrder[props.floortableno]=foodList;
+      foodOrder[props.floortableno] = foodList;
     }
     else{
-      foodList[item.fooditemid].qty=v;
-      foodOrder[props.floortableno]=foodList;
+      foodList[item.fooditemid].qty = v;
+      foodOrder[props.floortableno] = foodList;
     }
     console.log("add qty foodorder",foodOrder);
     dispatch({type:'ADD_ORDER',payload:[props.floortableNo,foodOrder[props.floortableNo]]});
@@ -58,8 +61,7 @@ export default function TableCart(props){
     return item1+(item2.offerprice*item2.qty)
   }
 
-  const [floor,setFloor]=useState([]);
-  const [table,setTable]=useState([]);
+  // Removed unused floor and table state
 
   const getCurrentDate=()=>{
     const date=new Date();
@@ -75,23 +77,31 @@ export default function TableCart(props){
 
   //!payment API ///////////////////////////////////////
 
-  const handlePayment = useCallback(async(na) => {
+
+  const handlePayment = useCallback(async (na) => {
+    // Load Razorpay script if not already loaded
+    if (!window.Razorpay) {
+      await new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = resolve;
+        document.body.appendChild(script);
+      });
+    }
 
     const options = {
       key: "rzp_test_GQ6XaPC6gMPNwH",
-      amount: na*100,
+      amount: na * 100,
       currency: "INR",
       name: admin.restaurantname,
       description: "Online Payments",
       image: `${serverURL}/images/${admin.filelogo}`,
-
       handler: (res) => {
-        console.log("Payment Details",res);
+        console.log("Payment Details", res);
       },
       prefill: {
         name: customername,
-        // email: "youremail@example.com",
-        contact:mobileNo,
+        contact: mobileNo,
       },
       notes: {
         address: "Razorpay Corporate Office",
@@ -101,9 +111,9 @@ export default function TableCart(props){
       },
     };
 
-    const rzpay = new Razorpay(options);
+    const rzpay = new window.Razorpay(options);
     rzpay.open();
-  }, [Razorpay]);
+  }, [admin, customername, mobileNo]);
 
   //! End payment ///////////////////////////////////
 

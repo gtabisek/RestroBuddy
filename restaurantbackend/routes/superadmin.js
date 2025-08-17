@@ -3,23 +3,24 @@ const router = express.Router();
 const pool=require('./pool');
 const jwt=require('jsonwebtoken');
 
-/*
-router.post("/chktoken", function (req, res) {
-  console.log(req.headers.authorization);
-  const token = req.headers.authorization;
-  jwt.verify(token, "shhhhhh", function (err, decoded) {
-    console.log(err, decoded);
-    res.status(200).json(decoded);
-  });
-  //res.status(200).json({'status':'invalid token'})
-});
-*/
+
+// router.post("/chktoken", function (req, res) {
+//   console.log(req.headers.authorization);
+//   const token = req.headers.authorization;
+//   jwt.verify(token, "shhhhhh", function (err, decoded) {
+//     console.log(err, decoded);
+//     res.status(200).json(decoded);
+//   });
+//   //res.status(200).json({'status':'invalid token'})
+// });
+
 
 router.post('/checklogin',function(req,res,next){
   console.log(req.body);
   pool.query('select * from superadmin where emailid=? and password=?',[req.body.emailid,req.body.password],function(error,result){
     if(error)
     {
+      console.log(error);
       res.status(200).json({status:false,data:[],message:'Server Error....'})
     }
     else

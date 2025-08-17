@@ -9,7 +9,8 @@ function App() {
     <div>
       <Router>
         <Routes>
-          <Route element={<LoginPage/>} path='/loginpage'/>
+            <Route element={<LoginPage/>} path='/' />
+            <Route element={<LoginPage/>} path='/loginpage'/>
           <Route element={<AdminLogin/>} path='/adminlogin'/>  
           <Route element={<Dashboard/>} path='/dashboard/*'/>
           <Route element={<AdminDashboard/>} path='/admindashboard/*'/>    
