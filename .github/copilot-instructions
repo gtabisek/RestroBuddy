@@ -1,0 +1,67 @@
+# Copilot Instructions for RestroBuddy
+
+## Big Picture Architecture
+- **Monorepo Structure:**
+  - `restaurantbackend/`: Node.js/Express backend, handles API, database, authentication, and business logic.
+  - `restaurantfrontend/`: React frontend, uses Redux for state, MUI for UI, Axios for API calls.
+- **Data Flow:**
+  - Frontend communicates with backend via REST API (see `FetchNodeServices.js`).
+  - Backend connects to MySQL (see `routes/pool.js`).
+  - Key tables: `superadmin`, `restaurants`, `states`, `city`, `category`, `fooditems`, `tablebooking`, `waiters`, `waitertable`, `users`, `billing`.
+
+## Developer Workflows
+- **Frontend:**
+  - Use `npm start` in `restaurantfrontend/` for development.
+  - Use `npm run build` for production build.
+  - Tests: `npm test` (default CRA runner).
+- **Backend:**
+  - Use `npm start` or `node ./bin/www` in `restaurantbackend/` to run server.
+  - No automated tests present; manual API testing recommended.
+- **Database:**
+  - MySQL schema managed outside repo (see `database.txt` for table list).
+  - Common workflow: update schema, restart backend.
+
+## Project-Specific Conventions
+- **Routes:**
+  - Backend routes in `routes/` folder, one file per domain (e.g., `admin.js`, `fooditem.js`).
+  - Route files use Express Router, export as module.
+- **Frontend State:**
+  - Redux root reducer in `src/Storage/RootReducer.js`.
+  - Order data managed by Redux actions: `ADD_ORDER`, `DEL_ORDER`, `EDIT_ORDER`.
+- **API Calls:**
+  - Use `getData`/`postData` from `src/services/FetchNodeServices.js`.
+  - Auth token stored in `localStorage` as `TOKEN`.
+- **UI:**
+  - MUI components for layout and widgets.
+  - Custom components in `src/components/` and `src/screens/`.
+
+## Integration Points & Dependencies
+- **Frontend:**
+  - React, Redux, MUI, Axios, react-router-dom.
+- **Backend:**
+  - Express, MySQL, Multer (file uploads), JWT (auth), SweetAlert2 (alerts).
+- **Cross-Component Communication:**
+  - Frontend: props, Redux, React Router.
+  - Backend: routes communicate via Express, share DB pool.
+
+## Examples & Patterns
+- **API Example:**
+  - Frontend: `postData('billing/fetch_todays_total', {todaysdate: ...})`
+  - Backend: `router.post('/fetch_todays_total', ...)`
+- **Redux Example:**
+  - `dispatch({type: "ADD_ORDER", payload: [...]})`
+- **Route Example:**
+  - `routes/fooditem.js` handles food item CRUD.
+
+## Key Files & Directories
+- `restaurantbackend/routes/` - backend API endpoints
+- `restaurantbackend/views/` - EJS templates
+- `restaurantfrontend/src/components/` - reusable UI components
+- `restaurantfrontend/src/screens/` - page-level React components
+- `restaurantfrontend/src/services/FetchNodeServices.js` - API utilities
+- `restaurantfrontend/src/Storage/RootReducer.js` - Redux root reducer
+- `database.txt` - database table list
+
+---
+
+If any section is unclear or missing, please provide feedback to improve these instructions.
