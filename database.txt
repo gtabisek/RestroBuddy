@@ -1,0 +1,89 @@
+1. superadmin
+superadminid (pk)
+superadminname
+emailid
+password
+picture
+
+2. restaurants
+restaurantid (pk)
+restaurantname
+ownername
+mobileno
+emailid
+phonenumber
+address
+stateid (fk)
+cityid (fk)
+url
+fssai
+gstno
+gsttype
+logo
+shopregistration
+
+3. states
+stateid (pk)
+statename
+
+4. city
+cityid (pk)
+stateid (fk)
+cityname
+
+5. category
+categoryid (pk)
+restaurantid (fk)
+categoryname
+description
+icon
+
+6. fooditems
+fooditemid (pk)
+restaurantid (fk)
+categoryid (fk)
+fooditemname
+foodtype
+ingredients
+price
+offerprice
+icon
+
+7. tablebooking
+tableid (pk)
+restaurantid (fk)
+tableno
+noofchairs
+floor
+
+8. waiters
+waiterid (pk)
+restaurantid (fk)
+waitername
+gender
+dob
+mobileno
+emailid
+address
+
+9. waitertable
+waitertableid (pk)
+restaurantid (fk)
+waiterid (fk)
+tableid (fk)
+currentdate
+
+10. billing
+billid (pk)
+restaurantid (fk)
+tableno
+server
+billdate
+billtime
+customername
+mobileno
+billingdetails (JSON)
+totalamount
+gst
+fssai
+cnote
