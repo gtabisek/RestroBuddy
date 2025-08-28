@@ -46,7 +46,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
 2.  **Navigate to the project directory**:
     ```bash
-    cd restrobuddy/RestroBuddy-ecc6e32bb4c74aaab1a96f585c281b9a4886d768
+    cd restrobuddy
     ```
 3.  **Install backend dependencies**:
     ```bash
