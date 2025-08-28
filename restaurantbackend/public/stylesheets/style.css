@@ -1,0 +1,19 @@
+
+/*
+====================================================
+ style.css
+
+ This stylesheet provides basic styling for the backend web application.
+ - Sets default body padding and font family.
+ - Styles anchor tags with a custom color.
+====================================================
+*/
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}

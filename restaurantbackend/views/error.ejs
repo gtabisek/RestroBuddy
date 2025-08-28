@@ -1,0 +1,12 @@
+
+<!--
+	error.ejs
+	Displays error messages and stack trace for server-side errors.
+	Variables:
+		message - Error message
+		error.status - HTTP status code
+		error.stack - Stack trace
+-->
+<h1><%= message %></h1>
+<h2><%= error.status %></h2>
+<pre><%= error.stack %></pre>

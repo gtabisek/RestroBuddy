@@ -1,0 +1,103 @@
+/**
+ * category.js
+ *
+ * This route handles category management for restaurants.
+ * Main endpoints:
+ *   POST /category/category_submit - Adds a new category for a restaurant.
+ *   POST /category/fetch_all_category - Fetches all categories for a restaurant.
+ *   POST /category/category_edit_data - Edits category details.
+ *   POST /category/category_edit_icon - Updates category icon.
+ *
+ * Dependencies:
+ *   - pool: MySQL connection pool
+ *   - upload: Multer for file uploads
+ */
+
+var express = require('express');
+var router = express.Router();
+const pool = require("./pool");
+const upload = require('./multer');
+
+/**
+ * POST /category/category_submit
+ * Adds a new category for a restaurant.
+ */
+router.post('/category_submit', upload.any(), function(req, res, next) {
+    pool.query("insert into category (restaurantid,categoryname,icon)values(?,?,?)", [req.body.restaurantid, req.body.categoryname, req.files[0].filename], function(error, result) {
+        if (error) {
+            console.log("Errorrr", error);
+            res.status(200).json({ status: false, message: 'Database Error' });
+        } else {
+            res.status(200).json({ status: true, message: 'category Added Successfully' });
+        }
+    });
+});
+
+/**
+ * POST /category/fetch_all_category
+ * Fetches all categories for a restaurant.
+ */
+router.post('/fetch_all_category', function(req, res) {
+    pool.query('select * from category where restaurantid=?', [req.body.restaurantid], function(error, result) {
+        if (error) {
+            console.log(error);
+            res.status(200).json({ status: false, message: 'Database Error', data: [] });
+        } else {
+            console.log(result);
+            res.status(200).json({ status: true, data: result, message: 'category Get Successfully' });
+        }
+    });
+});
+
+/**
+ * POST /category/category_edit_data
+ * Edits category details.
+ */
+router.post('/category_edit_data', upload.any(), function(req, res, next) {
+    pool.query("update category set restaurantid=?,categoryname=? where categoryid=?", [req.body.restaurantid, req.body.categoryname, req.body.categoryid], function(error, result) {
+        if (error) {
+            console.log("Errorrr", error);
+            res.status(200).json({ status: false, message: 'Database Error' });
+        } else {
+            res.status(200).json({ status: true, message: 'category Updated Successfully' });
+        }
+    });
+});
+
+/**
+ * POST /category/category_edit_icon
+ * Updates category icon.
+ */
+router.post('/category_edit_icon', upload.any(), function(req, res, next) {
+    pool.query("update category set icon=? where categoryid=?", [req.files[0].filename, req.body.categoryid], function(error, result) {
+        if (error) {
+            console.log("Errorrr", error);
+            res.status(200).json({ status: false, message: 'Database Error' });
+        
+        }
+        else
+        {
+            res.status(200).json({status:true,message:'Icon Updated Successfully'})
+        }
+        
+        })
+        });
+
+        router.post('/category_delete',upload.any(), function(req, res, next) {
+          pool.query("delete from category where categoryid=?",[req.body.categoryid],function(error,result){
+          if(error)
+          {
+              console.log("Errorrr",error);
+              res.status(200).json({status:false,message:'Database Error'})
+          
+          }
+          else
+          {
+            console.log("res......",req.body.categoryid);
+              res.status(200).json({status:true,message:'Category deleted Successfully'})
+          }
+          
+          })
+          });
+
+module.exports = router;
